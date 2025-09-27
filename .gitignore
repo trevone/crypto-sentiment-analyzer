@@ -205,3 +205,5 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+data/processed/crypto_posts_with_sentiment.csv
+data/raw/crypto_posts.csv
