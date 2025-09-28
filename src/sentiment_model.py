@@ -1,32 +1,37 @@
+#!/usr/bin/env python3
+import os
 import pandas as pd
 from transformers import pipeline
 from dotenv import load_dotenv
-import os
 
-# Load environment variables (needed if any API keys for HF)
-load_dotenv()
+# Load environment variables
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "..", ".env"))
 
-RAW_CSV_PATH = "/opt/crypto-sentiment-analyzer/data/raw/crypto_posts.csv"
-PROCESSED_CSV_PATH = "/opt/crypto-sentiment-analyzer/data/processed/crypto_posts_with_sentiment.csv"
+DATA_RAW_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "raw")
+DATA_PROCESSED_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "processed")
+RAW_CSV_FILE = os.path.join(DATA_RAW_PATH, "cryptocurrency_posts.csv")
+PROCESSED_CSV_FILE = os.path.join(DATA_PROCESSED_PATH, "crypto_posts_with_sentiment.csv")
 
-def analyze_sentiment(input_csv="data/raw/crypto_posts.csv", output_csv="data/processed/crypto_posts_with_sentiment.csv"):
-    df = pd.read_csv(input_csv)
-    sentiment_analyzer = pipeline("sentiment-analysis")
-    df["sentiment"] = df["post_text"].apply(lambda x: sentiment_analyzer(x)[0]["label"])
-    df.to_csv(output_csv, index=False)
-    return df
+os.makedirs(DATA_PROCESSED_PATH, exist_ok=True)
 
-def run_sentiment():
-    try:
-        df = pd.read_csv(RAW_CSV_PATH)
-        sentiment_pipeline = pipeline("sentiment-analysis")
-        df['sentiment'] = df['title'].apply(lambda x: sentiment_pipeline(x)[0]['label'])
-        df.to_csv(PROCESSED_CSV_PATH, index=False)
-        print(f"[{pd.Timestamp.now()}] Saved sentiment results to {PROCESSED_CSV_PATH}")
-    except FileNotFoundError:
-        print(f"[{pd.Timestamp.now()}] WARNING: Raw CSV not found, skipping sentiment run.")
-    except Exception as e:
-        print(f"[{pd.Timestamp.now()}] ERROR: Sentiment model failed - {e}")
+# Initialize sentiment pipeline
+sentiment_analyzer = pipeline("sentiment-analysis")
+
+def analyze_sentiment(text):
+    if not text:
+        return "NEUTRAL"
+    result = sentiment_analyzer(text)[0]
+    return result["label"].upper()
+
+def main():
+    df = pd.read_csv(RAW_CSV_FILE)
+    
+    # Compute sentiment
+    df["sentiment"] = df["selftext"].apply(analyze_sentiment)
+    
+    # Ensure all original columns are preserved, including 'url'
+    df.to_csv(PROCESSED_CSV_FILE, index=False)
+    print(f"[{pd.Timestamp.now()}] Saved sentiment results to {PROCESSED_CSV_FILE}")
 
 if __name__ == "__main__":
-    run_sentiment()
+    main()
