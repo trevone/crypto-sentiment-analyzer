@@ -24,24 +24,14 @@ selected_subreddit = st.selectbox("Select Subreddit", subreddits)
 
 # -------- REFRESH --------
 if st.button("Refresh Data"):
-    st.info(f"Fetching posts from r/{selected_subreddit}...")
-    df_raw = fetch_posts(subreddit_name=selected_subreddit, limit=100)  # returns DataFrame with url etc.
-
-    # Ensure expected columns
-    if "selftext" not in df_raw.columns:
-        df_raw["selftext"] = ""
-
-    # Run sentiment (pass text!)
-    df_raw["selftext"] = df_raw["selftext"].fillna("").astype(str)
-    df_raw["sentiment"] = df_raw["selftext"].apply(analyze_sentiment)
-
-    # Safety: url column for links in lists below
-    if "url" not in df_raw.columns:
-        df_raw["url"] = "#"
-
-    # Save processed CSV
-    os.makedirs(os.path.dirname(DATA_PROCESSED), exist_ok=True)
-    df_raw.to_csv(DATA_PROCESSED, index=False)
+    st.info(f"Updating from r/{selected_subreddit}...")
+    import subprocess
+    subprocess.run(
+        ["/root/miniconda3/envs/crypto_sentiment/bin/python",
+         "/opt/crypto-sentiment-analyzer/src/update_data.py",
+         selected_subreddit, "100"],
+        check=True
+    )
     st.success("Data refreshed!")
 
 # -------- LOAD DATA --------
