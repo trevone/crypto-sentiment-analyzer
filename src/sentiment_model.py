@@ -21,10 +21,18 @@ def analyze_sentiment(text):
     text = str(text)
     if not text.strip():
         return "NEUTRAL"
-    # Truncate text to first 512 tokens
-    max_length = 512
-    result = sentiment_analyzer(text, truncation=True, max_length=max_length)[0]
-    return result["label"].upper()
+    
+    max_len = 512
+    chunks = [text[i:i+max_len] for i in range(0, len(text), max_len)]
+    sentiments = [sentiment_analyzer(chunk, truncation=True, max_length=max_len)[0]["label"].upper() for chunk in chunks]
+    
+    # Simplest aggregation: if any NEGATIVE → NEGATIVE, else POSITIVE, else NEUTRAL
+    if "NEGATIVE" in sentiments:
+        return "NEGATIVE"
+    elif "POSITIVE" in sentiments:
+        return "POSITIVE"
+    else:
+        return "NEUTRAL"
 
 def main():
     df = pd.read_csv(RAW_CSV_FILE)
