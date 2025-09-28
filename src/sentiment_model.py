@@ -9,6 +9,13 @@ load_dotenv()
 RAW_CSV_PATH = "/opt/crypto-sentiment-analyzer/data/raw/crypto_posts.csv"
 PROCESSED_CSV_PATH = "/opt/crypto-sentiment-analyzer/data/processed/crypto_posts_with_sentiment.csv"
 
+def analyze_sentiment(input_csv="data/raw/crypto_posts.csv", output_csv="data/processed/crypto_posts_with_sentiment.csv"):
+    df = pd.read_csv(input_csv)
+    sentiment_analyzer = pipeline("sentiment-analysis")
+    df["sentiment"] = df["post_text"].apply(lambda x: sentiment_analyzer(x)[0]["label"])
+    df.to_csv(output_csv, index=False)
+    return df
+
 def run_sentiment():
     try:
         df = pd.read_csv(RAW_CSV_PATH)
