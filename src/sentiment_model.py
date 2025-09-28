@@ -18,10 +18,12 @@ os.makedirs(DATA_PROCESSED_PATH, exist_ok=True)
 sentiment_analyzer = pipeline("sentiment-analysis")
 
 def analyze_sentiment(text):
-    text = str(text)  # ensure it's a string
-    if not text.strip():  # handle empty strings
+    text = str(text)
+    if not text.strip():
         return "NEUTRAL"
-    result = sentiment_analyzer(text)[0]
+    # Truncate text to first 512 tokens
+    max_length = 512
+    result = sentiment_analyzer(text, truncation=True, max_length=max_length)[0]
     return result["label"].upper()
 
 def main():
