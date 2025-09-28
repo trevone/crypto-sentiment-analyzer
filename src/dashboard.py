@@ -4,6 +4,16 @@ import matplotlib.pyplot as plt
 from reddit_scraper import fetch_posts
 from sentiment_model import analyze_sentiment
 
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env
+load_dotenv(dotenv_path='/opt/crypto-sentiment-analyzer/.env')
+
+REDDIT_CLIENT_ID = os.getenv("REDDIT_CLIENT_ID")
+REDDIT_CLIENT_SECRET = os.getenv("REDDIT_CLIENT_SECRET")
+REDDIT_USER_AGENT = os.getenv("REDDIT_USER_AGENT")
+
 st.title("Crypto Sentiment Analyzer Dashboard")
 st.markdown("Visualizing Reddit sentiment for cryptocurrencies")
 
