@@ -18,7 +18,8 @@ os.makedirs(DATA_PROCESSED_PATH, exist_ok=True)
 sentiment_analyzer = pipeline("sentiment-analysis")
 
 def analyze_sentiment(text):
-    if not text:
+    text = str(text)  # ensure it's a string
+    if not text.strip():  # handle empty strings
         return "NEUTRAL"
     result = sentiment_analyzer(text)[0]
     return result["label"].upper()
