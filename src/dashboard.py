@@ -1,19 +1,20 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
+import plotly.express as px
 from reddit_scraper import fetch_posts
 from sentiment_model import analyze_sentiment
 from dotenv import load_dotenv
 import os
 
-# --- Load environment variables ---
+# Load environment variables from .env
 load_dotenv(dotenv_path='/opt/crypto-sentiment-analyzer/.env')
 
 REDDIT_CLIENT_ID = os.getenv("REDDIT_CLIENT_ID")
 REDDIT_CLIENT_SECRET = os.getenv("REDDIT_CLIENT_SECRET")
 REDDIT_USER_AGENT = os.getenv("REDDIT_USER_AGENT")
 
-# --- Streamlit page ---
+st.set_page_config(page_title="Crypto Sentiment Dashboard", layout="wide")
+
 st.title("Crypto Sentiment Analyzer Dashboard")
 st.markdown("Visualizing Reddit sentiment for cryptocurrencies")
 
@@ -21,66 +22,63 @@ st.markdown("Visualizing Reddit sentiment for cryptocurrencies")
 subreddits = ["CryptoCurrency", "Bitcoin", "CryptoMarkets", "ethtrader"]
 selected_subreddit = st.selectbox("Select Subreddit", subreddits)
 
+DATA_PATH = "/opt/crypto-sentiment-analyzer/data/processed/crypto_posts_with_sentiment.csv"
+
 # --- Refresh button ---
 if st.button("Refresh Data"):
     st.info(f"Fetching posts from r/{selected_subreddit}...")
-    
-    # Fetch posts
-    df = fetch_posts(subreddit_name=selected_subreddit, limit=100)
-
-    # Ensure 'selftext' exists and is string
-    if not df.empty and "selftext" in df.columns:
-        df["selftext"] = df["selftext"].fillna("").astype(str)
-        df["sentiment"] = df["selftext"].apply(analyze_sentiment)
-
-    # Ensure 'url' column exists (for dashboard links)
-    if "url" not in df.columns:
-        df["url"] = "#"
-
-    # Save processed CSV
-    df.to_csv("/opt/crypto-sentiment-analyzer/data/processed/crypto_posts_with_sentiment.csv", index=False)
+    df_raw = fetch_posts(subreddit_name=selected_subreddit, limit=100)
+    analyze_sentiment(df_raw)  # Pass dataframe to avoid reloading CSV
     st.success("Data refreshed!")
 
-# --- Load processed data ---
-DATA_PATH = "/opt/crypto-sentiment-analyzer/data/processed/crypto_posts_with_sentiment.csv"
-if os.path.exists(DATA_PATH):
-    df = pd.read_csv(DATA_PATH)
-else:
-    st.warning("No processed data found. Please refresh the data first.")
-    df = pd.DataFrame(columns=["id", "title", "selftext", "created_utc", "sentiment", "url"])
+# Load processed data
+df = pd.read_csv(DATA_PATH)
+
+# Convert created_utc to datetime
+df['created_utc'] = pd.to_datetime(df['created_utc'], unit='s')
+
+# Map sentiment to numeric scores
+df['sentiment_score'] = df['sentiment'].map({'NEGATIVE': -1, 'NEUTRAL': 0, 'POSITIVE': 1})
+
+# --- Average Sentiment Metric ---
+avg_score = df['sentiment_score'].mean()
+st.metric("Average Sentiment Score", round(avg_score, 2))
+
+# --- Overall Sentiment Pie Chart ---
+fig_pie = px.pie(
+    df, 
+    names='sentiment', 
+    title='Overall Sentiment Distribution',
+    color='sentiment',
+    color_discrete_map={'NEGATIVE':'red', 'NEUTRAL':'orange', 'POSITIVE':'green'}
+)
+st.plotly_chart(fig_pie, use_container_width=True)
+
+# --- Sentiment Over Time Stacked Bar Chart ---
+time_series = df.groupby(pd.Grouper(key='created_utc', freq='H'))['sentiment'].value_counts().unstack().fillna(0)
+time_series = time_series[['NEGATIVE','NEUTRAL','POSITIVE']]  # consistent order
+fig_bar = px.bar(
+    time_series,
+    x=time_series.index,
+    y=['NEGATIVE','NEUTRAL','POSITIVE'],
+    title=f"Sentiment Over Time for r/{selected_subreddit}",
+    labels={'value':'Post Count', 'created_utc':'Time'},
+    color_discrete_map={'NEGATIVE':'red', 'NEUTRAL':'orange', 'POSITIVE':'green'}
+)
+st.plotly_chart(fig_bar, use_container_width=True)
 
 # --- Show raw data ---
 if st.checkbox("Show raw data"):
     st.write(df.head(20))
 
-# --- Sentiment distribution ---
-st.subheader(f"Sentiment Distribution for r/{selected_subreddit}")
-if not df.empty and "sentiment" in df.columns:
-    sentiment_counts = df['sentiment'].value_counts()
-    st.bar_chart(sentiment_counts)
-else:
-    st.info("No sentiment data available.")
-
-# --- Top positive/negative posts ---
+# --- Top Posts by Sentiment ---
 st.subheader("Top Posts by Sentiment")
-if not df.empty:
-    top_positive = df[df['sentiment'] == 'POSITIVE'].head(5)
-    st.markdown("**Top 5 Positive Posts**")
-    for _, row in top_positive.iterrows():
-        st.markdown(f"- {row.get('title', 'No Title')} ([link]({row.get('url', '#')}))")
+top_positive = df[df['sentiment'] == 'POSITIVE'].head(5)
+st.markdown("**Top 5 Positive Posts**")
+for idx, row in top_positive.iterrows():
+    st.markdown(f"- {row['title']} ([link]({row['url']}))")
 
-    top_negative = df[df['sentiment'] == 'NEGATIVE'].head(5)
-    st.markdown("**Top 5 Negative Posts**")
-    for _, row in top_negative.iterrows():
-        st.markdown(f"- {row.get('title', 'No Title')} ([link]({row.get('url', '#')}))")
-else:
-    st.info("No posts available.")
-
-# --- Sentiment over time ---
-st.subheader("Sentiment Over Time")
-if not df.empty and "created_utc" in df.columns:
-    df['created_utc'] = pd.to_datetime(df['created_utc'], unit='s', errors='coerce')
-    time_series = df.groupby(pd.Grouper(key='created_utc', freq='H'))['sentiment'].value_counts().unstack().fillna(0)
-    st.line_chart(time_series)
-else:
-    st.info("No time series data available.")
+top_negative = df[df['sentiment'] == 'NEGATIVE'].head(5)
+st.markdown("**Top 5 Negative Posts**")
+for idx, row in top_negative.iterrows():
+    st.markdown(f"- {row['title']} ([link]({row['url']}))")
