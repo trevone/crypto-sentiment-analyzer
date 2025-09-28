@@ -1,40 +1,40 @@
 import praw
 import pandas as pd
 import os
-
 from dotenv import load_dotenv
 
-# Load variables from .env file
+# Load environment variables
 load_dotenv()
 
-# Load Reddit credentials from environment variables
-REDDIT_CLIENT_ID = os.getenv("REDDIT_CLIENT_ID")
-REDDIT_CLIENT_SECRET = os.getenv("REDDIT_CLIENT_SECRET")
-REDDIT_USER_AGENT = os.getenv("REDDIT_USER_AGENT")
+RAW_CSV_PATH = "/opt/crypto-sentiment-analyzer/data/raw/crypto_posts.csv"
+SUBREDDIT = "CryptoCurrency"
+POST_LIMIT = 200
 
 def init_reddit_client():
     return praw.Reddit(
-        client_id=REDDIT_CLIENT_ID,
-        client_secret=REDDIT_CLIENT_SECRET,
-        user_agent=REDDIT_USER_AGENT
+        client_id=os.getenv("REDDIT_CLIENT_ID"),
+        client_secret=os.getenv("REDDIT_CLIENT_SECRET"),
+        user_agent=os.getenv("REDDIT_USER_AGENT")
     )
 
-def fetch_posts(subreddit_name="CryptoCurrency", limit=100):
-    reddit = init_reddit_client()
-    subreddit = reddit.subreddit(subreddit_name)
-    posts = []
-    for submission in subreddit.new(limit=limit):
-        posts.append({
-            "title": submission.title,
-            "selftext": submission.selftext,
-            "url": submission.url,
-            "created_utc": submission.created_utc
-        })
-    df = pd.DataFrame(posts)
-    os.makedirs("data/raw", exist_ok=True)
-    df.to_csv("data/raw/crypto_posts.csv", index=False)
-    print(f"Saved {len(df)} posts to data/raw/crypto_posts.csv")
-    return df
+def fetch_posts():
+    try:
+        reddit = init_reddit_client()
+        posts = []
+        for submission in reddit.subreddit(SUBREDDIT).new(limit=POST_LIMIT):
+            posts.append({
+                "id": submission.id,
+                "title": submission.title,
+                "selftext": submission.selftext,
+                "created_utc": submission.created_utc
+            })
+
+        df = pd.DataFrame(posts)
+        df.to_csv(RAW_CSV_PATH, index=False)
+        print(f"[{pd.Timestamp.now()}] Saved {len(df)} posts to {RAW_CSV_PATH}")
+
+    except Exception as e:
+        print(f"[{pd.Timestamp.now()}] ERROR fetching posts: {e}")
 
 if __name__ == "__main__":
     fetch_posts()

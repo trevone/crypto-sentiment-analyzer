@@ -1,19 +1,25 @@
-from transformers import pipeline
 import pandas as pd
+from transformers import pipeline
+from dotenv import load_dotenv
 import os
 
-def init_sentiment_pipeline():
-    return pipeline("sentiment-analysis")
+# Load environment variables (needed if any API keys for HF)
+load_dotenv()
 
-def analyze_sentiment(input_csv="data/raw/crypto_posts.csv"):
-    df = pd.read_csv(input_csv)
-    sentiment_pipeline = init_sentiment_pipeline()
-    df["sentiment"] = df["title"].apply(lambda x: sentiment_pipeline(str(x))[0]["label"])
-    
-    os.makedirs("data/processed", exist_ok=True)
-    df.to_csv("data/processed/crypto_posts_with_sentiment.csv", index=False)
-    print(f"Saved sentiment results to data/processed/crypto_posts_with_sentiment.csv")
-    return df
+RAW_CSV_PATH = "/opt/crypto-sentiment-analyzer/data/raw/crypto_posts.csv"
+PROCESSED_CSV_PATH = "/opt/crypto-sentiment-analyzer/data/processed/crypto_posts_with_sentiment.csv"
+
+def run_sentiment():
+    try:
+        df = pd.read_csv(RAW_CSV_PATH)
+        sentiment_pipeline = pipeline("sentiment-analysis")
+        df['sentiment'] = df['title'].apply(lambda x: sentiment_pipeline(x)[0]['label'])
+        df.to_csv(PROCESSED_CSV_PATH, index=False)
+        print(f"[{pd.Timestamp.now()}] Saved sentiment results to {PROCESSED_CSV_PATH}")
+    except FileNotFoundError:
+        print(f"[{pd.Timestamp.now()}] WARNING: Raw CSV not found, skipping sentiment run.")
+    except Exception as e:
+        print(f"[{pd.Timestamp.now()}] ERROR: Sentiment model failed - {e}")
 
 if __name__ == "__main__":
-    analyze_sentiment()
+    run_sentiment()
