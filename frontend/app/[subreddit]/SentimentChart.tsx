@@ -1,3 +1,4 @@
+// app/[subreddit]/SentimentChart.tsx
 "use client";
 import Plot from "react-plotly.js";
 

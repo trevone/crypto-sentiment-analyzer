@@ -1,9 +1,9 @@
-// app/[subreddit]/SubredditClient.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
+import { WalletContext } from "../WalletContext"; // shared state
 
 const Plot = dynamic(() => import("react-plotly.js"), { ssr: false });
 
@@ -24,6 +24,14 @@ export default function SubredditClient({ subreddit }: { subreddit: string }) {
   const [data, setData] = useState<ApiResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+
+  // 🔑 wallet + subscription info from context
+  const { hasSubscription } = useContext(WalletContext);
+
+  // Available subreddits depend on subscription
+  const SUBREDDITS = hasSubscription
+    ? ["CryptoCurrency", "Bitcoin", "Ethereum"]
+    : ["CryptoCurrency"];
 
   useEffect(() => {
     let aborted = false;
@@ -61,9 +69,11 @@ export default function SubredditClient({ subreddit }: { subreddit: string }) {
           value={subreddit}
           onChange={(e) => router.push(`/${e.target.value}`)}
         >
-          <option value="CryptoCurrency">CryptoCurrency</option>
-          <option value="Bitcoin">Bitcoin</option>
-          <option value="Ethereum">Ethereum</option>
+          {SUBREDDITS.map((s) => (
+            <option key={s} value={s}>
+              {s}
+            </option>
+          ))}
         </select>
       </div>
 

@@ -1,13 +1,15 @@
-// app/layout.tsx
 import "./globals.css";
-import { ReactNode } from "react";
-import { UserProvider } from "./providers";
+import { WalletProvider } from "./WalletContext";
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <body>
-        <UserProvider>{children}</UserProvider>
+        <WalletProvider>{children}</WalletProvider>
       </body>
     </html>
   );

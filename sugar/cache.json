@@ -1,0 +1,18 @@
+{
+  "program": {
+    "candyMachine": "",
+    "candyGuard": "",
+    "candyMachineCreator": "",
+    "collectionMint": "FtuFvzTKEfzyUSHHX3E9gVr2NT5BdMGiFFDNPMUQBjwh"
+  },
+  "items": {
+    "0": {
+      "name": "Paid Tier Pass",
+      "image_hash": "ac1e25e0462bbe7e1ce9883d7c04b2676e4a011c2b548a89879932d7f5be5383",
+      "image_link": "https://gateway.irys.xyz/8v4vWXsSmXaGoAYyKNkhTbxb6S53k4JxSTMpcdPDXiNH?ext=png",
+      "metadata_hash": "8cd91a3ef8cf54e342710d536d1edcd4ac0ed45183b1d4c71813811bacd6b6d0",
+      "metadata_link": "https://arweave.net/9WLNQfwkFk5okTc7yCRZhgW3vveyFf43YdWc7Md6yz2A",
+      "onChain": false
+    }
+  }
+}

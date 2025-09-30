@@ -1,0 +1,25 @@
+{
+  "price": 0,
+  "number": 1,
+  "symbol": "PTP",
+  "sellerFeeBasisPoints": 0,
+  "gatekeeper": null,
+  "solTreasuryAccount": "8MWdPQDmUdrqP66TK4FwYRJWqoBM3F12tkHSPpzw5PkN",
+  "splTokenAccount": null,
+  "splToken": null,
+  "goLiveDate": "now",
+  "endSettings": null,
+  "whitelistMintSettings": null,
+  "hiddenSettings": null,
+  "uploadMethod": "bundlr",
+  "retainAuthority": true,
+  "isMutable": true,
+  "creators": [
+    {
+      "address": "8MWdPQDmUdrqP66TK4FwYRJWqoBM3F12tkHSPpzw5PkN",
+      "share": 100
+    }
+  ],
+  "isSequential": false,
+  "ruleSet": null
+}
