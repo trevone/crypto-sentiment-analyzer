@@ -1,0 +1,15 @@
+{
+  "name": "Example NFT #1",
+  "symbol": "EXNFT",
+  "description": "A simple Candy Machine demo NFT",
+  "image": "0.png",
+  "attributes": [
+    { "trait_type": "Background", "value": "Blue" }
+  ],
+  "properties": {
+    "files": [
+      { "uri": "0.png", "type": "image/png" }
+    ],
+    "category": "image"
+  }
+}

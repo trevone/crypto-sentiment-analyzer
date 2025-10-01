@@ -207,3 +207,7 @@ marimo/_lsp/
 __marimo__/ 
 *.next
 *node_modules
+backup/
+
+sugar/cache.json
+sugar/.sugar/

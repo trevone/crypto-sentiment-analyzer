@@ -1,0 +1,26 @@
+{
+  "program": {
+    "candyMachine": "92yg51De5DwXfniRAfBNRjGq89RPmfEyPL6nVw8MCSJs",
+    "candyGuard": "",
+    "candyMachineCreator": "4mx5K6qrD1h8gryxxcwPznZWAiSuc4xq7cTfP2hxoFVg",
+    "collectionMint": "7oAx7wm6kjiT3HRJho6E2Nwdxuebo4AGAg9rPZbjh6Gi"
+  },
+  "items": {
+    "-1": {
+      "name": "CSA Collection",
+      "image_hash": "ac1e25e0462bbe7e1ce9883d7c04b2676e4a011c2b548a89879932d7f5be5383",
+      "image_link": "https://arweave.net/8GoGxfKua4zHUidcfkMAyTEftd4L4zWX8g88A6RBxS6S?ext=png",
+      "metadata_hash": "bd30aaad72cf1be99af575334dcf15b5d7f3454083320683c6691fde9120477e",
+      "metadata_link": "https://gateway.irys.xyz/Hf7yNHTMGVtMrh1zNYgm56nuVbeSRefR49PPTtq1tXRj",
+      "onChain": true
+    },
+    "0": {
+      "name": "CSA #1",
+      "image_hash": "ac1e25e0462bbe7e1ce9883d7c04b2676e4a011c2b548a89879932d7f5be5383",
+      "image_link": "https://arweave.net/DusLSeYA3Lkw6WHLywojmcZkAn1QksGD5ia41ML6U6Er?ext=png",
+      "metadata_hash": "0e052eb2c7c9da83dc5549c957acb7a0ce52c385c0769c53d01d3a13a2b57d52",
+      "metadata_link": "https://gateway.irys.xyz/5hC2srUa5NbJibnhHgyXGXaHXksii4vz81fsoAwP1bWr",
+      "onChain": true
+    }
+  }
+}
