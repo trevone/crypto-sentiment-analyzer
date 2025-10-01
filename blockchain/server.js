@@ -1,19 +1,19 @@
-// server.js
+// blockchain/server.js
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 
 import subscriptionRoutes from "./routes/subscription.js";
-import mintRoute from "./routes/mint.js";   // 👈 new import
+import mintRoute from "./routes/mint.js";
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-app.post("/mint-subscription", mintSubscription);
+// Subscription check
 app.use("/api", subscriptionRoutes);
 
-// 👇 expose Candy Machine mint endpoint
+// Candy Machine mint endpoint
 app.use("/mint", mintRoute);
 
 const PORT = 4000;

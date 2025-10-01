@@ -211,3 +211,4 @@ backup/
 
 sugar/cache.json
 sugar/.sugar/
+.vscode/

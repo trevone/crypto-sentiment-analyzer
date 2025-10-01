@@ -29,24 +29,7 @@
   "mintingOrder": "linear",
   "guards": {
     "default": {
-      "botTax": null,
-      "solPayment": null,
-      "tokenPayment": null,
-      "startDate": null,
-      "thirdPartySigner": null,
-      "endDate": null,
-      "gatekeeper": null,
-      "allocation": null,
-      "nftPayment": null,
-      "redeemedAmount": null,
-      "addressGate": null,
-      "nftGate": null,
-      "nftBurn": null,
-      "tokenGate": null,
-      "nftMintLimit": null,
-      "freezeSolPayment": null,
-      "freezeTokenPayment": null,
-      "programGate": null
+      "botTax": { "value": 0.001, "lastInstruction": false }
     }
   }
 }

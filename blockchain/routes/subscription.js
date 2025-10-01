@@ -9,7 +9,7 @@ const metaplex = Metaplex.make(connection);
 console.log("✅ Subscription routes loaded");
 
 // Replace with your subscription NFT collection name or symbol
-const SUBSCRIPTION_SYMBOL = "PTP"; // Paid Tier Pass
+const SUBSCRIPTION_SYMBOL = "CSA"; // or whatever your collection symbol is
 
 // Check if a wallet holds a subscription NFT
 router.get("/check-subscription/:walletAddress", async (req, res) => {
