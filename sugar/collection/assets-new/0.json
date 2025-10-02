@@ -1,0 +1,11 @@
+{
+  "name": "CSA #1",
+  "symbol": "CSA",
+  "description": "First NFT in CSA collection",
+  "image": "0.png",
+  "attributes": [],
+  "properties": {
+    "files": [{ "uri": "0.png", "type": "image/png" }],
+    "category": "image"
+  }
+}

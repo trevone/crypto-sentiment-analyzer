@@ -25,7 +25,6 @@ export default function SubredditClient({ subreddit }: { subreddit: string }) {
   const [data, setData] = useState<ApiResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // free vs paid selection can be layered later; keep basic
   const SUBREDDITS = ["CryptoCurrency", "Bitcoin", "Ethereum"];
 
   useEffect(() => {

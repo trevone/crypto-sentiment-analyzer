@@ -1,0 +1,16 @@
+{
+  "name": "CSA Pass Collection",
+  "symbol": "CSA",
+  "description": "Collection of Subscription Pass NFTs for Crypto Sentiment Analyzer",
+  "image": "collection.png",
+  "attributes": [],
+  "properties": {
+    "files": [
+      {
+        "uri": "collection.png",
+        "type": "image/png"
+      }
+    ],
+    "category": "image"
+  }
+}

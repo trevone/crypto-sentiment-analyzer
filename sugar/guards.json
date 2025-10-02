@@ -1,0 +1,16 @@
+{
+  "default": {
+    "guards": {
+      "botTax": {
+        "lamports": 0,
+        "lastInstruction": false,
+        "number": 2
+      },
+      "mintLimit": {
+        "id": 1,
+        "limit": 9999,
+        "number": 1
+      }
+    }
+  }
+}

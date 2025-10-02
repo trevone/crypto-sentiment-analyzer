@@ -1,7 +1,7 @@
 {
-  "price": 0.1,
-  "number": 1,
-  "symbol": "EXNFT",
+  "price": 0.0,
+  "number": 50,
+  "symbol": "CSA",
   "sellerFeeBasisPoints": 500,
   "creators": [
     {
@@ -13,37 +13,37 @@
   "retainAuthority": true,
   "isSequential": false,
 
-  "hiddenSettings": null,
   "uploadMethod": "bundlr",
+  "hiddenSettings": null,
   "awsS3Bucket": null,
   "nftStorageAuthToken": null,
   "shdwStorageAccount": null,
 
   "gatekeeper": null,
   "whitelistMintSettings": null,
-  "goLiveDate": null,
+  "goLiveDate": "2025-10-01T00:00:00Z",
   "endSettings": null,
   "ruleSet": null,
 
   "mintingOrder": "linear",
   "guards": {
     "default": {
-      "botTax": null,
-      "solPayment": null,
-      "tokenPayment": null,
-      "startDate": null,
-      "endDate": null,
-      "gatekeeper": null,
-      "allocation": null,
-      "nftPayment": null,
-      "redeemedAmount": null,
-      "addressGate": null,
-      "nftGate": null,
-      "nftBurn": null,
-      "nftMintLimit": null,
-      "freezeSolPayment": null,
-      "freezeTokenPayment": null,
-      "programGate": null
+      "botTax": {
+        "value": 0.0,
+        "lastInstruction": false
+      },
+      "mintLimit": {
+        "id": 1,
+        "limit": 9999,
+        "number": 1
+      },
+      "solPayment": {
+        "value": 0.0,
+        "destination": "8MWdPQDmUdrqP66TK4FwYRJWqoBM3F12tkHSPpzw5PkN"
+      },
+      "startDate": {
+        "date": "2025-10-01T00:00:00Z"
+      }
     }
   }
 }

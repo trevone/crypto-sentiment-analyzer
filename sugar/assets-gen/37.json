@@ -1,0 +1,25 @@
+{
+  "name": "CSA Pass #38",
+  "symbol": "CSA",
+  "description": "Subscription Pass NFT for Crypto Sentiment Analyzer",
+  "image": "37.png",
+  "attributes": [
+    {
+      "trait_type": "Access",
+      "value": "Premium"
+    },
+    {
+      "trait_type": "Tier",
+      "value": "Paid"
+    }
+  ],
+  "properties": {
+    "files": [
+      {
+        "uri": "37.png",
+        "type": "image/png"
+      }
+    ],
+    "category": "image"
+  }
+}

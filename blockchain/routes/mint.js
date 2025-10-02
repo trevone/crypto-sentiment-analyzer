@@ -19,7 +19,7 @@ const metaplex = Metaplex.make(connection).use(keypairIdentity(identity));
 
 // ✅ Your deployed Candy Machine ID (from sugar/collection/cache.json)
 const CANDY_MACHINE_ID = new PublicKey(
-  "92yg51De5DwXfniRAfBNRjGq89RPmfEyPL6nVw8MCSJs"
+  "Cf51XuwY9ZXXQxaQK8awCeadT8S4ZfqVjNf9t3TFAW42"
 );
 
 router.post("/", async (req, res) => {
